@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sổ tiền Grab</title>
+
+<style>
+body{
+    font-family:Arial;
+    background:#f2f2f2;
+    padding:20px;
+}
+
+.app{
+    max-width:400px;
+    margin:auto;
+    background:white;
+    padding:20px;
+    border-radius:18px;
+}
+
+h1{
+    text-align:center;
+}
+
+input{
+    width:100%;
+    box-sizing:border-box;
+    padding:15px;
+    font-size:20px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    margin-bottom:10px;
+}
+
+button{
+    width:100%;
+    padding:15px;
+    margin-top:10px;
+    border:0;
+    border-radius:10px;
+    background:#111;
+    color:white;
+    font-size:18px;
+}
+
+.result{
+    margin-top:20px;
+    padding:15px;
+    background:#eee;
+    border-radius:12px;
+}
+
+.big{
+    text-align:center;
+    font-size:30px;
+    font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<h1>🛵 Sổ tiền Grab</h1>
+
+<p>💰 Nhập tiền cuốc vừa chạy:</p>
+
+<input id="tien" type="number" placeholder="Ví dụ: 25000">
+
+<button onclick="themCuoc()">➕ THÊM CUỐC</button>
+
+<hr>
+
+<p>⛽ Tiền xăng:</p>
+
+<input id="xang" type="number" placeholder="Ví dụ: 50000">
+
+<p>🧾 Chi phí phát sinh:</p>
+
+<input id="chiphi" type="number" placeholder="Ví dụ: 20000">
+
+<button onclick="tinhLai()">📊 TÍNH TIỀN</button>
+
+<div class="result">
+
+<p>🛵 Số cuốc: <b id="soCuoc">0</b></p>
+
+<p>💰 Tổng tiền cuốc:</p>
+<div id="tong">0đ</div>
+
+<p>⛽ Tiền xăng:</p>
+<div id="hienXang">0đ</div>
+
+<p>🧾 Chi phí phát sinh:</p>
+<div id="hienChiPhi">0đ</div>
+
+<p>📊 Trung bình/cuốc:</p>
+<div id="tb">0đ</div>
+
+<p>💵 TIỀN CÒN LẠI:</p>
+<div class="big" id="lai">0đ</div>
+
+</div>
+
+<button onclick="xoa()">🗑️ XÓA NGÀY</button>
+
+</div>
+
+<script>
+
+let danhSach = [];
+
+function dinhDang(so){
+    return so.toLocaleString("vi-VN") + "đ";
+}
+
+function capNhat(){
+
+    let tong = danhSach.reduce((a,b) => a+b, 0);
+
+    document.getElementById("soCuoc").innerText =
+        danhSach.length;
+
+    document.getElementById("tong").innerText =
+        dinhDang(tong);
+
+    let tb = danhSach.length > 0
+        ? Math.round(tong / danhSach.length)
+        : 0;
+
+    document.getElementById("tb").innerText =
+        dinhDang(tb);
+
+    tinhLai();
+}
+
+function themCuoc(){
+
+    let tien = Number(
+        document.getElementById("tien").value
+    );
+
+    if(tien <= 0){
+        alert("Hãy nhập tiền cuốc!");
+        return;
+    }
+
+    danhSach.push(tien);
+
+    document.getElementById("tien").value = "";
+
+    capNhat();
+}
+
+function tinhLai(){
+
+    let tong = danhSach.reduce((a,b) => a+b, 0);
+
+    let xang = Number(
+        document.getElementById("xang").value
+    ) || 0;
+
+    let chiphi = Number(
+        document.getElementById("chiphi").value
+    ) || 0;
+
+    let lai = tong - xang - chiphi;
+
+    document.getElementById("hienXang").innerText =
+        dinhDang(xang);
+
+    document.getElementById("hienChiPhi").innerText =
+        dinhDang(chiphi);
+
+    document.getElementById("lai").innerText =
+        dinhDang(lai);
+}
+
+function xoa(){
+
+    danhSach = [];
+
+    document.getElementById("tien").value = "";
+    document.getElementById("xang").value = "";
+    document.getElementById("chiphi").value = "";
+
+    document.getElementById("soCuoc").innerText = "0";
+    document.getElementById("tong").innerText = "0đ";
+    document.getElementById("hienXang").innerText = "0đ";
+    document.getElementById("hienChiPhi").innerText = "0đ";
+    document.getElementById("tb").innerText = "0đ";
+    document.getElementById("lai").innerText = "0đ";
+}
+
+</script>
+
+</body>
+</html>
