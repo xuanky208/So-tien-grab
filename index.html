@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sổ tiền Grab</title>
+<style>
+body{font-family:Arial;background:#f2f2f2;padding:20px}
+.app{max-width:400px;margin:auto;background:white;padding:20px;border-radius:18px}
+h1{text-align:center}
+input{width:100%;box-sizing:border-box;padding:15px;font-size:20px;border-radius:10px;border:1px solid #ccc}
+button{width:100%;padding:15px;margin-top:12px;border:0;border-radius:10px;background:#111;color:white;font-size:18px}
+.result{margin-top:20px;padding:15px;background:#eee;border-radius:12px}
+.big{text-align:center;font-size:30px;font-weight:bold}
+</style>
+</head>
+
+<body>
+<div class="app">
+<h1>🛵 Sổ tiền Grab</h1>
+
+<p>Nhập tiền cuốc vừa chạy:</p>
+<input id="tien" type="number" placeholder="Ví dụ: 25000">
+
+<button onclick="themCuoc()">➕ THÊM CUỐC</button>
+
+<div class="result">
+<p>🛵 Số cuốc: <b id="soCuoc">0</b></p>
+<p>💰 Tổng tiền:</p>
+<div class="big" id="tong">0đ</div>
+<p>📊 Trung bình/cuốc: <b id="tb">0đ</b></p>
+</div>
+
+<button onclick="xoa()">🗑️ XÓA NGÀY</button>
+</div>
+
+<script>
+let danhSach = [];
+
+function themCuoc(){
+    let tien = Number(document.getElementById("tien").value);
+
+    if(tien <= 0){
+        alert("Hãy nhập tiền cuốc!");
+        return;
+    }
+
+    danhSach.push(tien);
+
+    let tong = danhSach.reduce((a,b) => a+b, 0);
+
+    document.getElementById("soCuoc").innerText = danhSach.length;
+    document.getElementById("tong").innerText =
+        tong.toLocaleString("vi-VN") + "đ";
+
+    document.getElementById("tb").innerText =
+        Math.round(tong/danhSach.length).toLocaleString("vi-VN") + "đ";
+
+    document.getElementById("tien").value = "";
+}
+
+function xoa(){
+    danhSach = [];
+    document.getElementById("soCuoc").innerText = "0";
+    document.getElementById("tong").innerText = "0đ";
+    document.getElementById("tb").innerText = "0đ";
+}
+</script>
+</body>
+</html>
