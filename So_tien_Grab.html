@@ -1,0 +1,38 @@
+<!doctype html><html lang="vi"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sổ cuốc Grab</title>
+<style>
+body{margin:0;background:#f3f4f6;font-family:-apple-system,BlinkMacSystemFont,Arial;padding:18px}
+.card{max-width:420px;margin:auto;background:white;border-radius:20px;padding:20px;box-shadow:0 4px 18px #ccc}
+h1{text-align:center}.money{font-size:32px;text-align:center;font-weight:700;margin:15px 0}
+input{width:100%;padding:15px;border:1px solid #ccc;border-radius:12px;font-size:20px}
+button{width:100%;padding:15px;border:0;border-radius:12px;font-size:18px;margin-top:12px;background:#111;color:white}
+.secondary{background:#777}.row{display:flex;justify-content:space-between;margin:10px 0}
+li{margin:8px 0}
+</style></head><body><div class="card">
+<h1>🛵 Sổ tiền Grab</h1>
+<div class="money" id="total">0đ</div>
+<div class="row"><span>Số cuốc</span><b id="count">0</b></div>
+<div class="row"><span>Trung bình/cuốc</span><b id="avg">0đ</b></div>
+<p>Nhập tiền cuốc vừa chạy:</p>
+<input id="amount" type="number" inputmode="numeric" placeholder="Ví dụ: 25000">
+<button id="add">➕ THÊM CUỐC</button>
+<h3>Lịch sử</h3><ol id="list"></ol>
+<button class="secondary" id="clear">🗑️ XÓA NGÀY</button>
+</div>
+<script>
+let trips=JSON.parse(localStorage.getItem("grabTrips")||"[]");
+const money=n=>n.toLocaleString("vi-VN")+"đ";
+function render(){
+ let total=trips.reduce((a,b)=>a+b,0);
+ totalEl.textContent=money(total); countEl.textContent=trips.length;
+ avgEl.textContent=money(trips.length?Math.round(total/trips.length):0);
+ list.innerHTML=trips.map((x,i)=>"<li>Cuốc "+(i+1)+": <b>"+money(x)+"</b></li>").join("");
+}
+const amount=document.getElementById("amount"), totalEl=document.getElementById("total"),
+countEl=document.getElementById("count"),avgEl=document.getElementById("avg"),list=document.getElementById("list");
+document.getElementById("add").onclick=()=>{let n=Number(amount.value);if(n>0){trips.push(n);localStorage.setItem("grabTrips",JSON.stringify(trips));amount.value="";render();amount.focus()}else alert("Nhập số tiền cuốc trước nhé!");};
+amount.onkeydown=e=>{if(e.key==="Enter")document.getElementById("add").click()};
+document.getElementById("clear").onclick=()=>{if(confirm("Xóa toàn bộ cuốc hôm nay?")){trips=[];localStorage.removeItem("grabTrips");render()}};
+render();
+</script></body></html>
